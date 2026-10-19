@@ -313,11 +313,17 @@ import { GoCheckCircleFill } from "react-icons/go";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { toast } from "react-toastify";
 
+// toast.success("As a poject scrutiny you have been escaped 'Admin Login' Functionalilty, Otherwise for the admin that functionality is avaialble.");
+toast.success(
+  "As a project scrutiny, you have been escaped the Admin Login functionality. Otherwise, this functionality is available to the admin.",
+  {
+    duration: 10000, // 8 seconds
+  }
+);
 const Dashboard = () => {
   const { isAuthenticated } = useContext(Context);
   const [appointments, setAppointments] = useState([]);
   const navigate = useNavigate();
-
   const fetchAppointments = async () => {
     try {
       const { data } = await axios.get(
@@ -394,8 +400,7 @@ const Dashboard = () => {
               Hello, Aasu Shaikh
             </h2>
             <p className="text-sm sm:text-base text-gray-600 mt-2">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt qui
-              dolorum eos iste placeat veritatis eum exercitationem.
+              Experienced doctors taking place to recognize your disease and will be getting that none. Specialized in their field.
             </p>
           </div>
         </div>
