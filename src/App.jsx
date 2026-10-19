@@ -37,7 +37,7 @@ const App = () => {
   return (
     <div>
       <Router>
-        {/* <Sidebar /> */}
+        <Sidebar />
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/login" element={<Login />} />
