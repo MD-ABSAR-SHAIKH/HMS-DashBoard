@@ -13,7 +13,7 @@ import axios from "axios";
 import Sidebar from "./components/Sidebar";
 
 const App = () => {
-  const { isAuthenticated, setIsAuthenticated, setUser, url } =
+  const { isAuthenticated=true, setIsAuthenticated, setUser, url } =
     useContext(Context);
 
   useEffect(() => {
@@ -37,7 +37,7 @@ const App = () => {
   return (
     <div>
       <Router>
-        <Sidebar />
+        {/* <Sidebar /> */}
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/login" element={<Login />} />

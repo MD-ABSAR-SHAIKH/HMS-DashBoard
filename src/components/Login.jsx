@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 
 const Login = () => {
   const { isAuthenticated, setIsAuthenticated, url } = useContext(Context);
+      // isAuthenticated(true);//Bypass
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -50,6 +51,7 @@ const Login = () => {
   if (isAuthenticated) {
     return navigate("/");
   }
+  navigate("/");
 
   return (
     <div className="flex justify-center items-center flex-col">
