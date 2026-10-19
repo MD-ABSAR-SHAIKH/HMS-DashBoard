@@ -87,8 +87,8 @@ const Dashboard = () => {
               Hello, Aasu Shaikh
             </h2>
             <p className="text-sm sm:text-base text-gray-600 mt-2">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt qui
-              dolorum eos iste placeat veritatis eum exercitationem.
+              Experienced doctors taking place to recognize your disease and
+              will be getting that none. Specialized in their field.
             </p>
           </div>
         </div>
