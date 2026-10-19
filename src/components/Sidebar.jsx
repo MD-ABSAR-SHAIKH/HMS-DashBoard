@@ -269,22 +269,41 @@ const Sidebar = () => {
     setIsOpen(false);
   };
 
-  const handleLogout = async () => {
-    setIsOpen(false);
-    await axios
-      .get("https://hms-backend-czxa.onrender.com/api/v1/user/admin/logout", {
-        withCredentials: true,
-      })
-      .then((res) => {
-        toast.success(res.data.message);
-        setIsAuthenticated(false);
-      })
-      .catch((err) => {
-        toast.error(err.response?.data?.message || err.message);
-      });
-    navigate("/login");
-  };
+  // const handleLogout = async () => {
+  //   setIsOpen(false);
+  //   await axios
+  //     .get("https://hms-backend-czxa.onrender.com/api/v1/user/admin/logout", {
+  //       withCredentials: true,
+  //     })
+  //     .then((res) => {
+  //       toast.success(res.data.message);
+  //       setIsAuthenticated(false);
+  //     })
+  //     .catch((err) => {
+  //       toast.error(err.response?.data?.message || err.message);
+  //     });
+  //   navigate("/login");
+  // };
+const handleLogout = async () => {
+  setIsOpen(false);
 
+  // Immediately update the UI and redirect
+  setIsAuthenticated(false);
+  navigate("/login", { replace: true });
+
+  try {
+    const res = await axios.get(
+      "https://hms-backend-czxa.onrender.com/api/v1/user/admin/logout",
+      { withCredentials: true }
+    );
+
+    toast.success(res.data.message || "Logged out successfully");
+  } catch (err) {
+    toast.error(
+      err.response?.data?.message || "Logout request failed"
+    );
+  }
+};
   const links = [
     { label: "HOME", icon: TiHome, onClick: () => go("/") },
     { label: "DOCTORS", icon: FaUserDoctor, onClick: () => go("/doctors") },

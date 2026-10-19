@@ -1,3 +1,58 @@
+// import React, { useContext, useEffect } from "react";
+// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+// import Dashboard from "./components/Dashboard";
+// import AddNewDoctor from "./components/AddNewDoctor";
+// import Login from "./components/Login";
+// import AddNewAdmin from "./components/AddNewAdmin";
+// import Doctors from "./components/Doctors";
+// import Messages from "./components/Messages";
+// import { ToastContainer } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
+// import { Context } from "./main";
+// import axios from "axios";
+// import Sidebar from "./components/Sidebar";
+
+// const App = () => {
+//   const { isAuthenticated=true, setIsAuthenticated, setUser, url } =
+//     useContext(Context);
+
+//   useEffect(() => {
+//     const fetchUser = async () => {
+//       try {
+//         const response = await axios.get(
+//           "https://hms-backend-czxa.onrender.com/api/v1/user/admin/me",
+//           // `${url}/api/v1/user/admin/me`,
+//           { withCredentials: true }
+//         );
+//         setIsAuthenticated(true);
+//         setUser(response.data.user);
+//       } catch (error) {
+//         setIsAuthenticated(false);
+//         setUser({});
+//       }
+//     };
+//     fetchUser();
+//   }, [isAuthenticated]);
+
+//   return (
+//     <div>
+//       <Router>
+//         <Sidebar />
+//         <Routes>
+//           <Route path="/" element={<Dashboard />} />
+//           <Route path="/login" element={<Login />} />
+//           <Route path="/doctor/addnew" element={<AddNewDoctor />} />
+//           <Route path="/admin/addnew" element={<AddNewAdmin />} />
+//           <Route path="/messages" element={<Messages />} />
+//           <Route path="/doctors" element={<Doctors />} />
+//         </Routes>
+//         <ToastContainer position="top-center" />
+//       </Router>
+//     </div>
+//   );
+// };
+
+// export default App;
 import React, { useContext, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Dashboard from "./components/Dashboard";
@@ -13,42 +68,52 @@ import axios from "axios";
 import Sidebar from "./components/Sidebar";
 
 const App = () => {
-  const { isAuthenticated=true, setIsAuthenticated, setUser, url } =
-    useContext(Context);
+  const { setIsAuthenticated, setUser, url } = useContext(Context);
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchUser = async () => {
       try {
         const response = await axios.get(
-          "https://hms-backend-czxa.onrender.com/api/v1/user/admin/me",
-          // `${url}/api/v1/user/admin/me`,
+          `${url || "https://hms-backend-czxa.onrender.com"}/api/v1/user/admin/me`,
           { withCredentials: true }
         );
-        setIsAuthenticated(true);
-        setUser(response.data.user);
+
+        if (isMounted) {
+          setIsAuthenticated(true);
+          setUser(response.data.user);
+        }
       } catch (error) {
-        setIsAuthenticated(false);
-        setUser({});
+        if (isMounted) {
+          setIsAuthenticated(false);
+          setUser({});
+        }
       }
     };
+
     fetchUser();
-  }, [isAuthenticated]);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [setIsAuthenticated, setUser, url]);
 
   return (
-    <div>
-      <Router>
-        <Sidebar />
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/doctor/addnew" element={<AddNewDoctor />} />
-          <Route path="/admin/addnew" element={<AddNewAdmin />} />
-          <Route path="/messages" element={<Messages />} />
-          <Route path="/doctors" element={<Doctors />} />
-        </Routes>
-        <ToastContainer position="top-center" />
-      </Router>
-    </div>
+    <Router>
+      <Sidebar />
+
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/doctor/addnew" element={<AddNewDoctor />} />
+        <Route path="/admin/addnew" element={<AddNewAdmin />} />
+        <Route path="/messages" element={<Messages />} />
+        <Route path="/doctors" element={<Doctors />} />
+      </Routes>
+
+      <ToastContainer position="top-center" />
+    </Router>
   );
 };
 
