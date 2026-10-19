@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 
 const Login = () => {
   const { isAuthenticated, setIsAuthenticated, url } = useContext(Context);
-      // isAuthenticated(true);//Bypass
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");

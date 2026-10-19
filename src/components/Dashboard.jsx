@@ -1,3 +1,310 @@
+// import React, { useContext, useEffect, useState } from "react";
+// import { Context } from "../main";
+// import { useNavigate } from "react-router-dom";
+// import axios from "axios";
+// import { GoCheckCircleFill } from "react-icons/go";
+// import { AiFillCloseCircle } from "react-icons/ai";
+// import { toast } from "react-toastify";
+
+// const Dashboard = () => {
+//   const { isAuthenticated, url } = useContext(Context);
+//   const [appointments, setAppointments] = useState([]);
+//   const [status, setStatus] = useState("");
+//   console.log(status);
+
+//   console.log(appointments);
+//   const navigate = useNavigate();
+
+//   const fetchAppointments = async () => {
+//     try {
+//       const { data } = await axios.get(
+//         "https://hms-backend-czxa.onrender.com/api/v1/appointment/getall",
+//         // `${url}/api/v1/appointment/getall`,
+//         {
+//           withCredentials: true,
+//         }
+//       );
+//       setAppointments(data.appointments);
+//     } catch (error) {
+//       console.log("some error occured while fetching appointments", error);
+//     }
+//   };
+
+//   const handleUpdateStatus = async (appointmentId, status) => {
+//     try {
+//       const { data } = await axios.put(
+//         `https://hms-backend-czxa.onrender.com/api/v1/appointment/update/${appointmentId}`,
+//         // `${url}/api/v1/appointment/update/${appointmentId}`,
+//         { status },
+//         { withCredentials: true }
+//       );
+//       setAppointments((prevAppointments) =>
+//         prevAppointments.map((appointment) =>
+//           appointment._id === appointmentId
+//             ? { ...appointment, status }
+//             : appointment
+//         )
+//       );
+//       toast.success(data.message);
+//     } catch (error) {
+//       toast.error(error.response.data.message);
+//     }
+//   };
+
+//   useEffect(() => {
+//     if (!isAuthenticated) {
+//       return navigate("/login");
+//     }
+//     fetchAppointments();
+//   }, []);
+
+//   return (
+//     // <div>
+//     //   <div className="flex bg-gray-400 m-4 rounded-md gap-2">
+//     //     <div className="w-1/2 flex justify-center items-center bg-violet-500">
+//     //       <img src="/doc.png" alt="Doctor" className="h-44" />
+//     //       <div>
+//     //         Hello,{" "}
+//     //         <h2>
+//     //           Aasu Shaikh{" "}
+//     //           <p>
+//     //             Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt
+//     //             qui dolorum eos iste placeat veritatis eum exercitationem
+//     //           </p>
+//     //         </h2>
+//     //       </div>
+//     //     </div>
+//     //     <div className="w-1/2 flex justify-center items-start my-auto text-xl">
+//     //       <h2 className="w-1/2">
+//     //         Total Appointments <p className="font-bold">1500</p>
+//     //       </h2>
+//     //       <h2 className="w-1/2">
+//     //         Registered Doctors<p className="font-bold">20</p>
+//     //       </h2>
+//     //     </div>
+//     //   </div>
+//     //   <h1 className="flex justify-center text-xl font-bold my-2">
+//     //     Appointments
+//     //   </h1>
+//     //   <div>
+//     //     {/* <table className="w-full">
+//     //       <thead className="flex justify-center">
+//     //         <tr>
+//     //           <th className="mx-4">
+//     //             <td>Patient</td>
+//     //           </th>
+//     //           <th>
+//     //             <td>Date</td>
+//     //           </th>
+//     //           <th>
+//     //             <td>Doctor</td>
+//     //           </th>
+//     //           <th>
+//     //             <td>Department</td>
+//     //           </th>
+//     //           <th>
+//     //             <td>Status</td>
+//     //           </th>
+//     //           <th>
+//     //             <td>Visited</td>
+//     //           </th>
+//     //         </tr>
+//     //       </thead>
+//     //       <tbody>
+//     //         {appointments && appointments.length > 0
+//     //           ? appointments.map((appointment) => (
+//     //               <tr key={appointment._id}>
+//     //                 <td>
+//     //                   {appointment.firstName} {appointment.lastName}
+//     //                 </td>
+//     //                 <td>{appointment.appointment_date}</td>
+//     //                 <td>
+//     //                   {appointment.doctor.firstName}{" "}
+//     //                   {appointment.doctor.lastName}
+//     //                 </td>
+//     //                 <td>{appointment.department}</td>
+//     //                 <td>{appointment.status}</td>
+//     //                 <td>
+//     //                   {appointment.hasVisited ? (
+//     //                     <GoCheckCircleFill />
+//     //                   ) : (
+//     //                     <AiFillCloseCircle />
+//     //                   )}
+//     //                 </td>
+//     //               </tr>
+//     //             ))
+//     //           : "Appointment Not Found"}
+//     //       </tbody>
+//     //     </table> */}
+//     //     <table className="mx-auto">
+//     //       <thead>
+//     //         <tr>
+//     //           <th className="px-16">Patient</th>
+//     //           <th className="px-16">Date</th>
+//     //           <th className="px-16">Doctor</th>
+//     //           <th className="px-16">Department</th>
+//     //           <th className="px-16">Status</th>
+//     //           <th className="px-16">Visited</th>
+//     //         </tr>
+//     //       </thead>
+//     //       <tbody>
+//     //         {appointments && appointments.length > 0 ? (
+//     //           appointments.map((appointment) => (
+//     //             <tr key={appointment._id}>
+//     //               <td className="px-16">
+//     //                 {appointment.firstName} {appointment.lastName}
+//     //               </td>
+//     //               <td className="px-16">{appointment.appointment_date}</td>
+//     //               <td className="px-16">
+//     //                 {appointment.doctor.firstName} {appointment.doctor.lastName}
+//     //               </td>
+//     //               <td className="px-16">{appointment.department}</td>
+//     //               <select
+//     //                 value={appointment.status}
+//     //                 className="text-black"
+//     //                 onChange={(e) =>
+//     //                   handleUpdateStatus(appointment._id, e.target.value)
+//     //                 }
+//     //               >
+//     //                 <option value="Pending">Pending</option>
+//     //                 <option value="Accepted">Accepted</option>
+//     //                 <option value="Rejected">Rejected</option>
+//     //               </select>
+//     //               {/* <td className="px-16">{appointment.status}</td> */}
+//     //               <td className="px-16">
+//     //                 {appointment.hasVisited ? (
+//     //                   <GoCheckCircleFill />
+//     //                 ) : (
+//     //                   <AiFillCloseCircle />
+//     //                 )}
+//     //               </td>
+//     //             </tr>
+//     //           ))
+//     //         ) : (
+//     //           <tr>
+//     //             <td colSpan="6" className="text-center">
+//     //               Appointment Not Found
+//     //             </td>
+//     //           </tr>
+//     //         )}
+//     //       </tbody>
+//     //     </table>
+//     //   </div>
+//     // </div>
+//     <div className="p-8 bg-gray-100 min-h-screen">
+//       {/* Doctor Overview Section */}
+//       <div className="flex bg-white shadow-md rounded-lg p-6 gap-6 mb-8">
+//         <div className="w-1/2 flex items-center gap-4">
+//           <img
+//             src="/doc.png"
+//             alt="Doctor"
+//             className="h-44 w-44 rounded-full border-4 border-blue-500"
+//           />
+//           <div>
+//             <h2 className="text-2xl font-bold text-gray-800">
+//               Hello, Aasu Shaikh
+//             </h2>
+//             <p className="text-gray-600 mt-2">
+//               Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt qui
+//               dolorum eos iste placeat veritatis eum exercitationem.
+//             </p>
+//           </div>
+//         </div>
+//         <div className="w-1/2 flex justify-between items-center">
+//           <div className="text-center">
+//             <h2 className="text-xl text-gray-600">Total Appointments</h2>
+//             <p className="text-3xl font-bold text-gray-800">1500</p>
+//           </div>
+//           <div className="text-center">
+//             <h2 className="text-xl text-gray-600">Registered Doctors</h2>
+//             <p className="text-3xl font-bold text-gray-800">20</p>
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* Appointments Header */}
+//       <h1 className="text-center text-3xl font-bold text-gray-800 mb-6">
+//         Appointments
+//       </h1>
+
+//       {/* Appointments Table */}
+//       <div className="overflow-x-auto">
+//         <table className="w-full bg-white shadow-md rounded-lg">
+//           <thead className="bg-gray-200">
+//             <tr>
+//               <th className="px-6 py-4 text-left text-gray-600 font-medium">
+//                 Patient
+//               </th>
+//               <th className="px-6 py-4 text-left text-gray-600 font-medium">
+//                 Date
+//               </th>
+//               <th className="px-6 py-4 text-left text-gray-600 font-medium">
+//                 Doctor
+//               </th>
+//               <th className="px-6 py-4 text-left text-gray-600 font-medium">
+//                 Department
+//               </th>
+//               <th className="px-6 py-4 text-left text-gray-600 font-medium">
+//                 Status
+//               </th>
+//               <th className="px-6 py-4 text-left text-gray-600 font-medium">
+//                 Visited
+//               </th>
+//             </tr>
+//           </thead>
+//           <tbody>
+//             {appointments && appointments.length > 0 ? (
+//               appointments.map((appointment) => (
+//                 <tr key={appointment._id} className="border-b">
+//                   <td className="px-6 py-4 text-gray-800">
+//                     {appointment.firstName} {appointment.lastName}
+//                   </td>
+//                   <td className="px-6 py-4 text-gray-800">
+//                     {appointment.appointment_date}
+//                   </td>
+//                   <td className="px-6 py-4 text-gray-800">
+//                     {appointment.doctor.firstName} {appointment.doctor.lastName}
+//                   </td>
+//                   <td className="px-6 py-4 text-gray-800">
+//                     {appointment.department}
+//                   </td>
+//                   <td className="px-6 py-4">
+//                     <select
+//                       value={appointment.status}
+//                       className="text-gray-800 bg-gray-100 rounded p-1"
+//                       onChange={(e) =>
+//                         handleUpdateStatus(appointment._id, e.target.value)
+//                       }
+//                     >
+//                       <option value="Pending">Pending</option>
+//                       <option value="Accepted">Accepted</option>
+//                       <option value="Rejected">Rejected</option>
+//                     </select>
+//                   </td>
+//                   <td className="px-6 py-4 text-gray-800 text-center">
+//                     {appointment.hasVisited ? (
+//                       <GoCheckCircleFill className="text-green-500" />
+//                     ) : (
+//                       <AiFillCloseCircle className="text-red-500" />
+//                     )}
+//                   </td>
+//                 </tr>
+//               ))
+//             ) : (
+//               <tr>
+//                 <td colSpan="6" className="text-center py-6 text-gray-800">
+//                   Appointment Not Found
+//                 </td>
+//               </tr>
+//             )}
+//           </tbody>
+//         </table>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Dashboard;
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../main";
 import { useNavigate } from "react-router-dom";
@@ -7,22 +314,15 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import { toast } from "react-toastify";
 
 const Dashboard = () => {
-  const { isAuthenticated, url } = useContext(Context);
+  const { isAuthenticated } = useContext(Context);
   const [appointments, setAppointments] = useState([]);
-  const [status, setStatus] = useState("");
-  console.log(status);
-
-  console.log(appointments);
   const navigate = useNavigate();
 
   const fetchAppointments = async () => {
     try {
       const { data } = await axios.get(
         "https://hms-backend-czxa.onrender.com/api/v1/appointment/getall",
-        // `${url}/api/v1/appointment/getall`,
-        {
-          withCredentials: true,
-        }
+        { withCredentials: true }
       );
       setAppointments(data.appointments);
     } catch (error) {
@@ -34,7 +334,6 @@ const Dashboard = () => {
     try {
       const { data } = await axios.put(
         `https://hms-backend-czxa.onrender.com/api/v1/appointment/update/${appointmentId}`,
-        // `${url}/api/v1/appointment/update/${appointmentId}`,
         { status },
         { withCredentials: true }
       );
@@ -47,7 +346,7 @@ const Dashboard = () => {
       );
       toast.success(data.message);
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data?.message || error.message);
     }
   };
 
@@ -58,235 +357,142 @@ const Dashboard = () => {
     fetchAppointments();
   }, []);
 
+  const statusSelect = (appointment) => (
+    <select
+      value={appointment.status}
+      className="w-full md:w-auto text-gray-800 bg-gray-100 rounded p-1 text-sm sm:text-base"
+      onChange={(e) => handleUpdateStatus(appointment._id, e.target.value)}
+    >
+      <option value="Pending">Pending</option>
+      <option value="Accepted">Accepted</option>
+      <option value="Rejected">Rejected</option>
+    </select>
+  );
+
+  const visitedIcon = (appointment) =>
+    appointment.hasVisited ? (
+      <GoCheckCircleFill className="text-green-500 text-xl" />
+    ) : (
+      <AiFillCloseCircle className="text-red-500 text-xl" />
+    );
+
+  const doctorName = (appointment) =>
+    `${appointment.doctor?.firstName || ""} ${appointment.doctor?.lastName || ""}`;
+
   return (
-    // <div>
-    //   <div className="flex bg-gray-400 m-4 rounded-md gap-2">
-    //     <div className="w-1/2 flex justify-center items-center bg-violet-500">
-    //       <img src="/doc.png" alt="Doctor" className="h-44" />
-    //       <div>
-    //         Hello,{" "}
-    //         <h2>
-    //           Aasu Shaikh{" "}
-    //           <p>
-    //             Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt
-    //             qui dolorum eos iste placeat veritatis eum exercitationem
-    //           </p>
-    //         </h2>
-    //       </div>
-    //     </div>
-    //     <div className="w-1/2 flex justify-center items-start my-auto text-xl">
-    //       <h2 className="w-1/2">
-    //         Total Appointments <p className="font-bold">1500</p>
-    //       </h2>
-    //       <h2 className="w-1/2">
-    //         Registered Doctors<p className="font-bold">20</p>
-    //       </h2>
-    //     </div>
-    //   </div>
-    //   <h1 className="flex justify-center text-xl font-bold my-2">
-    //     Appointments
-    //   </h1>
-    //   <div>
-    //     {/* <table className="w-full">
-    //       <thead className="flex justify-center">
-    //         <tr>
-    //           <th className="mx-4">
-    //             <td>Patient</td>
-    //           </th>
-    //           <th>
-    //             <td>Date</td>
-    //           </th>
-    //           <th>
-    //             <td>Doctor</td>
-    //           </th>
-    //           <th>
-    //             <td>Department</td>
-    //           </th>
-    //           <th>
-    //             <td>Status</td>
-    //           </th>
-    //           <th>
-    //             <td>Visited</td>
-    //           </th>
-    //         </tr>
-    //       </thead>
-    //       <tbody>
-    //         {appointments && appointments.length > 0
-    //           ? appointments.map((appointment) => (
-    //               <tr key={appointment._id}>
-    //                 <td>
-    //                   {appointment.firstName} {appointment.lastName}
-    //                 </td>
-    //                 <td>{appointment.appointment_date}</td>
-    //                 <td>
-    //                   {appointment.doctor.firstName}{" "}
-    //                   {appointment.doctor.lastName}
-    //                 </td>
-    //                 <td>{appointment.department}</td>
-    //                 <td>{appointment.status}</td>
-    //                 <td>
-    //                   {appointment.hasVisited ? (
-    //                     <GoCheckCircleFill />
-    //                   ) : (
-    //                     <AiFillCloseCircle />
-    //                   )}
-    //                 </td>
-    //               </tr>
-    //             ))
-    //           : "Appointment Not Found"}
-    //       </tbody>
-    //     </table> */}
-    //     <table className="mx-auto">
-    //       <thead>
-    //         <tr>
-    //           <th className="px-16">Patient</th>
-    //           <th className="px-16">Date</th>
-    //           <th className="px-16">Doctor</th>
-    //           <th className="px-16">Department</th>
-    //           <th className="px-16">Status</th>
-    //           <th className="px-16">Visited</th>
-    //         </tr>
-    //       </thead>
-    //       <tbody>
-    //         {appointments && appointments.length > 0 ? (
-    //           appointments.map((appointment) => (
-    //             <tr key={appointment._id}>
-    //               <td className="px-16">
-    //                 {appointment.firstName} {appointment.lastName}
-    //               </td>
-    //               <td className="px-16">{appointment.appointment_date}</td>
-    //               <td className="px-16">
-    //                 {appointment.doctor.firstName} {appointment.doctor.lastName}
-    //               </td>
-    //               <td className="px-16">{appointment.department}</td>
-    //               <select
-    //                 value={appointment.status}
-    //                 className="text-black"
-    //                 onChange={(e) =>
-    //                   handleUpdateStatus(appointment._id, e.target.value)
-    //                 }
-    //               >
-    //                 <option value="Pending">Pending</option>
-    //                 <option value="Accepted">Accepted</option>
-    //                 <option value="Rejected">Rejected</option>
-    //               </select>
-    //               {/* <td className="px-16">{appointment.status}</td> */}
-    //               <td className="px-16">
-    //                 {appointment.hasVisited ? (
-    //                   <GoCheckCircleFill />
-    //                 ) : (
-    //                   <AiFillCloseCircle />
-    //                 )}
-    //               </td>
-    //             </tr>
-    //           ))
-    //         ) : (
-    //           <tr>
-    //             <td colSpan="6" className="text-center">
-    //               Appointment Not Found
-    //             </td>
-    //           </tr>
-    //         )}
-    //       </tbody>
-    //     </table>
-    //   </div>
-    // </div>
-    <div className="p-8 bg-gray-100 min-h-screen">
-      {/* Doctor Overview Section */}
-      <div className="flex bg-white shadow-md rounded-lg p-6 gap-6 mb-8">
-        <div className="w-1/2 flex items-center gap-4">
+    <div className="w-full overflow-x-hidden bg-gray-100 min-h-screen p-4 sm:p-6 lg:p-8">
+      {/* Section 1: Overview */}
+      <div className="flex flex-col lg:flex-row bg-white shadow-md rounded-lg p-4 sm:p-6 gap-6 mb-6 sm:mb-8">
+        <div className="w-full lg:w-1/2 flex flex-col sm:flex-row items-center sm:items-start lg:items-center gap-4 text-center sm:text-left">
           <img
             src="/doc.png"
             alt="Doctor"
-            className="h-44 w-44 rounded-full border-4 border-blue-500"
+            className="h-28 w-28 sm:h-36 sm:w-36 lg:h-44 lg:w-44 shrink-0 rounded-full border-4 border-blue-500 object-cover"
           />
-          <div>
-            <h2 className="text-2xl font-bold text-gray-800">
+          <div className="min-w-0">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
               Hello, Aasu Shaikh
             </h2>
-            <p className="text-gray-600 mt-2">
+            <p className="text-sm sm:text-base text-gray-600 mt-2">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt qui
               dolorum eos iste placeat veritatis eum exercitationem.
             </p>
           </div>
         </div>
-        <div className="w-1/2 flex justify-between items-center">
-          <div className="text-center">
-            <h2 className="text-xl text-gray-600">Total Appointments</h2>
-            <p className="text-3xl font-bold text-gray-800">1500</p>
+
+        <div className="w-full lg:w-1/2 grid grid-cols-2 gap-4 items-center text-center">
+          <div>
+            <h2 className="text-sm sm:text-lg lg:text-xl text-gray-600">
+              Total Appointments
+            </h2>
+            <p className="text-2xl sm:text-3xl font-bold text-gray-800">1500</p>
           </div>
-          <div className="text-center">
-            <h2 className="text-xl text-gray-600">Registered Doctors</h2>
-            <p className="text-3xl font-bold text-gray-800">20</p>
+          <div>
+            <h2 className="text-sm sm:text-lg lg:text-xl text-gray-600">
+              Registered Doctors
+            </h2>
+            <p className="text-2xl sm:text-3xl font-bold text-gray-800">20</p>
           </div>
         </div>
       </div>
 
-      {/* Appointments Header */}
-      <h1 className="text-center text-3xl font-bold text-gray-800 mb-6">
+      {/* Section 2: Appointments */}
+      <h1 className="text-center text-2xl sm:text-3xl font-bold text-gray-800 mb-4 sm:mb-6">
         Appointments
       </h1>
 
-      {/* Appointments Table */}
-      <div className="overflow-x-auto">
+      {/* Phone: cards */}
+      <div className="md:hidden flex flex-col gap-4">
+        {appointments && appointments.length > 0 ? (
+          appointments.map((appointment) => (
+            <div
+              key={appointment._id}
+              className="bg-white shadow-md rounded-lg p-4 text-sm text-gray-800"
+            >
+              <div className="flex justify-between items-start gap-3">
+                <p className="font-semibold text-base break-words">
+                  {appointment.firstName} {appointment.lastName}
+                </p>
+                {visitedIcon(appointment)}
+              </div>
+              <div className="mt-2 grid grid-cols-[auto,1fr] gap-x-3 gap-y-1">
+                <span className="text-gray-500">Date</span>
+                <span className="break-words">{appointment.appointment_date}</span>
+                <span className="text-gray-500">Doctor</span>
+                <span className="break-words">{doctorName(appointment)}</span>
+                <span className="text-gray-500">Department</span>
+                <span className="break-words">{appointment.department}</span>
+              </div>
+              <div className="mt-3">{statusSelect(appointment)}</div>
+            </div>
+          ))
+        ) : (
+          <div className="bg-white shadow-md rounded-lg p-6 text-center text-gray-800">
+            Appointment Not Found
+          </div>
+        )}
+      </div>
+
+      {/* Tablet and up: table */}
+      <div className="hidden md:block overflow-x-auto">
         <table className="w-full bg-white shadow-md rounded-lg">
           <thead className="bg-gray-200">
             <tr>
-              <th className="px-6 py-4 text-left text-gray-600 font-medium">
-                Patient
-              </th>
-              <th className="px-6 py-4 text-left text-gray-600 font-medium">
-                Date
-              </th>
-              <th className="px-6 py-4 text-left text-gray-600 font-medium">
-                Doctor
-              </th>
-              <th className="px-6 py-4 text-left text-gray-600 font-medium">
-                Department
-              </th>
-              <th className="px-6 py-4 text-left text-gray-600 font-medium">
-                Status
-              </th>
-              <th className="px-6 py-4 text-left text-gray-600 font-medium">
-                Visited
-              </th>
+              {["Patient", "Date", "Doctor", "Department", "Status", "Visited"].map(
+                (h) => (
+                  <th
+                    key={h}
+                    className="px-3 lg:px-6 py-3 lg:py-4 text-left text-sm lg:text-base text-gray-600 font-medium whitespace-nowrap"
+                  >
+                    {h}
+                  </th>
+                )
+              )}
             </tr>
           </thead>
           <tbody>
             {appointments && appointments.length > 0 ? (
               appointments.map((appointment) => (
                 <tr key={appointment._id} className="border-b">
-                  <td className="px-6 py-4 text-gray-800">
+                  <td className="px-3 lg:px-6 py-3 lg:py-4 text-sm lg:text-base text-gray-800">
                     {appointment.firstName} {appointment.lastName}
                   </td>
-                  <td className="px-6 py-4 text-gray-800">
+                  <td className="px-3 lg:px-6 py-3 lg:py-4 text-sm lg:text-base text-gray-800 whitespace-nowrap">
                     {appointment.appointment_date}
                   </td>
-                  <td className="px-6 py-4 text-gray-800">
-                    {appointment.doctor.firstName} {appointment.doctor.lastName}
+                  <td className="px-3 lg:px-6 py-3 lg:py-4 text-sm lg:text-base text-gray-800">
+                    {doctorName(appointment)}
                   </td>
-                  <td className="px-6 py-4 text-gray-800">
+                  <td className="px-3 lg:px-6 py-3 lg:py-4 text-sm lg:text-base text-gray-800">
                     {appointment.department}
                   </td>
-                  <td className="px-6 py-4">
-                    <select
-                      value={appointment.status}
-                      className="text-gray-800 bg-gray-100 rounded p-1"
-                      onChange={(e) =>
-                        handleUpdateStatus(appointment._id, e.target.value)
-                      }
-                    >
-                      <option value="Pending">Pending</option>
-                      <option value="Accepted">Accepted</option>
-                      <option value="Rejected">Rejected</option>
-                    </select>
+                  <td className="px-3 lg:px-6 py-3 lg:py-4">
+                    {statusSelect(appointment)}
                   </td>
-                  <td className="px-6 py-4 text-gray-800 text-center">
-                    {appointment.hasVisited ? (
-                      <GoCheckCircleFill className="text-green-500" />
-                    ) : (
-                      <AiFillCloseCircle className="text-red-500" />
-                    )}
+                  <td className="px-3 lg:px-6 py-3 lg:py-4">
+                    <div className="flex justify-center">
+                      {visitedIcon(appointment)}
+                    </div>
                   </td>
                 </tr>
               ))
