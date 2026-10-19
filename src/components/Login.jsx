@@ -1,11 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Context } from "../main";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 
+const inputClass =
+  "w-full min-w-0 p-3 text-sm sm:text-base text-black bg-white border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500";
+
 const Login = () => {
-  const { isAuthenticated, setIsAuthenticated, url } = useContext(Context);
+  const { isAuthenticated, setIsAuthenticated } = useContext(Context);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -16,7 +19,6 @@ const Login = () => {
     try {
       const response = await axios.post(
         "https://hms-backend-czxa.onrender.com/api/v1/user/login",
-        // `${url}/api/v1/user/login`,
         {
           email,
           password,
@@ -31,72 +33,59 @@ const Login = () => {
       toast.success(response.data.message);
       setIsAuthenticated(true);
       navigate("/");
-
-      // .then((res) => {
-      //   toast.success(res.data.message);
-      //   setIsAuthenticated(true);
-      //   navigate("/");
-      //   setEmail("");
-      //   setPassword("");
-      //   setConfirmPassword("");
-      // });
     } catch (error) {
-      // toast.error(error.response.data.message);
-      toast("Error")
-      console.log(error);
+      toast.error(error.response?.data?.message || error.message);
     }
   };
 
   if (isAuthenticated) {
-    return navigate("/");
+    return <Navigate to="/" />;
   }
-  navigate("/");
 
   return (
-    <div className="flex justify-center items-center flex-col">
-      <img src="./logo.png" alt="logo" width={"250rem"} />
-      <h1 className="font-bold text-xl my-2">WELCOME TO ZEECARE</h1>
-      <p className="p-2">
-        Only admins are allowed to access these resources!
-      </p>{" "}
-      <form
-        onSubmit={handleLogin}
-        className="flex justify-center items-center flex-col gap-4 w-full"
-      >
-        <input
-          className="p-2 w-96 border-black text-black rounded-sm"
-          type="email"
-          value={email}
-          placeholder="email"
-          onChange={(e) => {
-            setEmail(e.target.value);
-          }}
-        />
-        <input
-          className="p-2 w-96 border-black text-black rounded-sm"
-          type="text"
-          value={password}
-          placeholder="password"
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
-        />
-        <input
-          className="p-2 w-96 border-black text-black rounded-sm"
-          type="text"
-          value={confirmPassword}
-          placeholder="confirm password"
-          onChange={(e) => {
-            setConfirmPassword(e.target.value);
-          }}
-        />
-        <button
-          type="submit"
-          className="bg-white p-2 px-6 font-bold text-black rounded-full"
+    <div className="w-full min-h-[80vh] flex items-center justify-center px-4 py-8">
+      <div className="w-full max-w-md flex flex-col items-center">
+        <img src="/logo.png" alt="logo" className="w-40 sm:w-56 h-auto" />
+        <h1 className="font-bold text-xl sm:text-2xl my-2 text-center">
+          WELCOME TO ZEECARE
+        </h1>
+        <p className="p-2 text-sm sm:text-base text-center">
+          Only admins are allowed to access these resources!
+        </p>
+
+        <form
+          onSubmit={handleLogin}
+          className="w-full flex flex-col items-center gap-4"
         >
-          Login
-        </button>
-      </form>
+          <input
+            className={inputClass}
+            type="email"
+            value={email}
+            placeholder="Email"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            className={inputClass}
+            type="password"
+            value={password}
+            placeholder="Password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <input
+            className={inputClass}
+            type="password"
+            value={confirmPassword}
+            placeholder="Confirm Password"
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+          <button
+            type="submit"
+            className="w-full sm:w-auto bg-white border border-gray-400 py-3 px-8 font-bold text-black rounded-full"
+          >
+            Login
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
