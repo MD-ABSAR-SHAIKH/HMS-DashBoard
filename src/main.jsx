@@ -11,8 +11,8 @@ const AppWrapper = () => {
   const url = "https://hms-backend-m6zz.onrender.com";
   return (
     <Context.Provider
-      // value={{ isAuthenticated, setIsAuthenticated, user, setUser, url }}
-      value={{ isAuthenticated: true, setIsAuthenticated, user, setUser, url }}
+      value={{ isAuthenticated, setIsAuthenticated, user, setUser, url }}
+      // value={{ isAuthenticated: true, setIsAuthenticated, user, setUser, url }}
     >
       <App />
     </Context.Provider>
