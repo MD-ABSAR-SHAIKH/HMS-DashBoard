@@ -3,12 +3,12 @@ import { Context } from "../main";
 import { Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+toast.success("Email: aasu@gmail.com  Password: 12345678");
 
 const inputClass =
   "w-full min-w-0 p-3 text-sm sm:text-base text-black bg-white border border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500";
 
 const Login = () => {
-        toast.success("Email: aasu@gmail.com  Password: 12345678");
 
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
   const [email, setEmail] = useState("");
