@@ -525,6 +525,16 @@ import axios from "axios";
 import { GoCheckCircleFill } from "react-icons/go";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { toast } from "react-toastify";
+useEffect(() => {
+    toast.success(
+      "As a project scrutiny, you have been escaped the Admin Login functionality. Otherwise, this functionality is available to the admin.",
+      { autoClose: 10000 }
+    );
+    if (!isAuthenticated) {
+      return navigate("/login");
+    }
+    fetchAppointments();
+  }, []);
 
 const Dashboard = () => {
   const { isAuthenticated } = useContext(Context);
@@ -569,16 +579,6 @@ const Dashboard = () => {
     }
   };
 
-  useEffect(() => {
-    toast.success(
-      "As a project scrutiny, you have been escaped the Admin Login functionality. Otherwise, this functionality is available to the admin.",
-      { autoClose: 10000 }
-    );
-    if (!isAuthenticated) {
-      return navigate("/login");
-    }
-    fetchAppointments();
-  }, []);
 
   const emptyText = loading
     ? "Loading appointments... (the server may take up to a minute to wake up)"
